@@ -4,10 +4,10 @@ library(dplyr)
 library(janitor)
 library(tidyr)
 
-#on télécharge nos 3 bases de données 
+# on télécharge nos 3 bases de données 
 
 kart <- read_delim(
-  "C:/Users/jujus/Downloads/projet annalyse de données - kart.csv",
+  "projet annalyse de données - kart.csv",
   delim = ",",
   locale = locale(decimal_mark = ","),   #indique que les décimales sont avec des virgules 
   show_col_types = FALSE,
@@ -15,7 +15,7 @@ kart <- read_delim(
 ) %>% clean_names()
 
 roue <- read_delim(
-  "C:/Users/jujus/Downloads/projet annalyse de données - roue.csv",
+  "projet annalyse de données - roue.csv",
   delim = ",",
   locale = locale(decimal_mark = ","),
   show_col_types = FALSE,
@@ -23,7 +23,7 @@ roue <- read_delim(
 ) %>% clean_names()
 
 planeur <- read_delim(
-  "C:/Users/jujus/Downloads/projet annalyse de données - planeur.csv",
+  "projet annalyse de données - planeur.csv",
   delim = ",",
   locale = locale(decimal_mark = ","),
   show_col_types = FALSE,
@@ -44,7 +44,7 @@ summary(planeur)
 #On s'occuppe maintenant des personnages qui ont déjà chacun des points de base 
 #j'ai enlever les lignes de calculs de la moyenne pour vitesse et maniabilité car elles sotn deja dans la base 
 personnages <- read_delim(
-  "C:/Users/jujus/Downloads/base personnages mario - Feuille 1.csv",
+  "base personnages mario - Feuille 1.csv",
   delim = ",",
   locale = locale(decimal_mark = ","),
   show_col_types = FALSE
