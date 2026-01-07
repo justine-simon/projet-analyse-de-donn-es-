@@ -41,8 +41,8 @@ summary(kart)
 summary(roue)
 summary(planeur)
 
-#On s'occuppe maintenant des personnages qui ont déjà chacun des points de base 
-#j'ai enlever les lignes de calculs de la moyenne pour vitesse et maniabilité car elles sotn deja dans la base 
+#On s'occuppe maintenant des personnages qui ont déjà chacun des points de base.
+#j'ai enlevé les lignes de calculs de la moyenne pour vitesse et maniabilité car elles sont déjà dans la base 
 personnages <- read_delim(
   "base personnages mario - Feuille 1.csv",
   delim = ",",
