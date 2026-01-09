@@ -2,59 +2,81 @@
 
 ## Présentation du projet
 
-Ce projet a pour objectif d’analyser et d’exploiter les statistiques des différents composants de Mario Kart 8 Deluxe (personnages, karts, roues et ailes) afin de déterminer la meilleure combinaison possible en fonction des préférences du joueur.
+Ce projet vise à analyser et exploiter les statistiques des différents composants de Mario Kart 8 Deluxe (personnages, karts, roues et planeurs) afin de déterminer automatiquement la combinaison optimale en fonction des préférences du joueur.
 
-Chaque composant du jeu possède des caractéristiques spécifiques (vitesse, accélération, maniabilité, poids, etc.). Le choix d’un véhicule dans Mario Kart 8 Deluxe repose donc sur des arbitrages entre ces statistiques. L’objectif du projet est d’automatiser cette recherche afin d’identifier les combinaisons qui maximisent les performances selon les critères définis par l’utilisateur.
+Dans Mario Kart 8 Deluxe, chaque composant possède des caractéristiques spécifiques (vitesse, accélération, maniabilité, poids, mini-turbo, etc.). Le choix d’un véhicule repose donc sur des arbitrages entre ces statistiques, qui dépendent à la fois du style de jeu du joueur et du type de circuit sélectionné.
+L’objectif de ce projet est d’automatiser cette prise de décision en proposant, à partir de critères personnalisés, les configurations offrant les meilleures performances possibles.
 
-## Processus de création du questionnaire 
-Dans un premier temps nous avons créer nos bases de statstiques, pour les personnages, les roues, les planneurs et les karts. 
-Apres avoir importé nos bases, nous avons determiner pour les 30 circuits de Mario Kart 8 Deluxe son type (eau, vol, grande vitesse, technique)
+## Construction des bases de données
 
-par la suite pour chaque type de circuits on a determiner un poucentage pour chaque catégorie. par exemple, pour un circuit eau, les varibale vitesse eau et maniabilité eau sont plus importante que celle pour le sol l'air ou la gravité. 
+Dans un premier temps, plusieurs bases de données ont été constituées à partir des statistiques du jeu. Elles regroupent :
 
-Pour la création de notre questionnaire, nous avons pris la décision de le faire en 2 parties. 
-Dans un premier temps, le joueur choisi son personnage préféré puis sont circuit. et ensuite il détermine ces preferences en fonction de nos différentes catégories qui définisse sont style de jeu. 
-Notre code calcule esuite le meilleur combo pour maximiser les statistiques afin de proposer le meilleur combo en focntion des préferences du jeu du joueur. 
+- les caractéristiques des personnages ;
+- les statistiques des karts ;
+- les statistiques des roues ;
+- les statistiques des planeurs.
 
-Les objectifs principaux du projet sont les suivants :
+Les données ont été importées depuis des fichiers CSV, nettoyées et harmonisées (noms de variables, formats numériques, cohérence des catégories) afin de permettre leur combinaison ultérieure.
+Pour les personnages, des statistiques moyennes de vitesse et de maniabilité ont également été calculées à partir des performances selon l’environnement (sol, eau, air et antigravité).
 
-- Importer et structurer les bases de données contenant les statistiques des composants de Mario Kart 8 Deluxe
 
-- Combiner les statistiques des personnages, karts, roues et ailes
+## Classification des circuits et pondérations
 
-- Permettre à l’utilisateur de définir ses préférences de performance (par exemple : vitesse maximale, accélération, maniabilité)
+Les 30 circuits de Mario Kart 8 Deluxe ont ensuite été classés en quatre grandes catégories selon leurs caractéristiques dominantes :
 
-- Identifier les meilleures combinaisons possibles en fonction de ces préférences
+- Circuits aquatiques (EAU)
+- Circuits aériens (VOL)
+- Circuits orientés vitesse (VITESSE)
+- Circuits techniques (TECHNIQUE)
 
-- Comparer et classer les différentes configurations de véhicules
+À chaque catégorie de circuit est associée une pondération spécifique des environnements (sol, eau, air, antigravité).
+Par exemple, pour un circuit aquatique, les statistiques de vitesse et de maniabilité en eau sont davantage valorisées que celles liées aux autres environnements.
+Ces pondérations permettent d’adapter l’évaluation des performances au contexte réel de course.
+
+
+## Conception du questionnaire utilisateur
+
+Le projet repose sur un questionnaire interactif en deux étapes :
+
+### 1. Choix du contexte de jeu
+Le joueur sélectionne son personnage préféré. Il choisit ensuite un circuit parmi la liste proposée, ce qui détermine automatiquement la catégorie du circuit et les pondérations associées.
+
+### 2. Définition des préférences de jeu
+Le joueur attribue une note (de 0 à 10) à plusieurs critères de performance :
+- vitesse ;
+- mini-turbo (drift) ;
+- maniabilité ;
+- accélération ;
+- poids.
+Ces préférences sont normalisées afin de construire un profil de jeu cohérent, utilisé ensuite pour le calcul du score final.
+
+
+## Principe de fonctionnement de l’algorithme
+
+Le code fonctionne selon les étapes suivantes :
+
+1. Chargement et préparation des bases de données.
+2. Génération de l’ensemble des combinaisons possibles entre karts, roues et planeurs.
+3. Addition des statistiques de chaque composant avec celles du personnage choisi.
+4. Calcul de statistiques contextuelles (vitesse et maniabilité pondérées selon le type de circuit).
+5. Construction d’un score global pour chaque combinaison, basé sur les préférences du joueur ; les statistiques du véhicule et les pondérations liées au circuit.
+6. Classement des configurations par ordre décroissant de performance.
+
+Le programme retourne alors la meilleure combinaison recommandée ainsi qu’un classement des meilleures configurations selon le score obtenu.
+
+
+## Objectifs du projet
+
+Les objectifs principaux de ce projet sont :
+
+- intégrer des préférences utilisateur via un questionnaire interactif ;
+- mettre en place un système de pondération contextuelle ;
+- automatiser le classement et la sélection de solutions optimales ;
+- proposer une aide à la décision personnalisée pour le joueur.
+
 
 ## Données utilisées
 
-Le projet repose sur plusieurs bases de données au format CSV, stockées dans le dossier "données".
-Chaque base correspond à un type de composant du jeu :
+Le projet repose sur plusieurs fichiers CSV, fais nous même, contenant les statistiques numériques des composants de Mario Kart 8 Deluxe.
+Ces données constituent la base de calcul de l’ensemble des performances et permettent de reproduire fidèlement les mécaniques statistiques du jeu. 
 
-Statistiques des personnages
-
-Statistiques des karts
-
-Statistiques des roues
-
-Statistiques des ailes (planeurs)
-
-Ces bases de données contiennent les valeurs numériques associées aux différentes statistiques de performance utilisées dans le jeu.
-
-## Principe de fonctionnement
-
-Le code procède de la manière suivante :
-
-Chargement des différentes bases de données
-
-Fusion des statistiques des composants pour générer l’ensemble des combinaisons possibles
-
-Calcul des statistiques globales de chaque combinaison
-
-Application d’un critère de sélection basé sur les préférences du joueur
-
-Classement des combinaisons afin d’identifier celles offrant les meilleures performances
-
-Le résultat final permet de recommander une ou plusieurs configurations optimales selon le style de jeu recherché.
