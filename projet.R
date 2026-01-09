@@ -4,7 +4,9 @@ library(dplyr)
 library(janitor)
 library(tidyr)
 
-# on télécharge nos 3 bases de données 
+# ==================================
+# MISE EN FORME DES BASES DE DONNEES 
+# ===================================
 
 kart <- read_delim(
   "projet annalyse de données - kart.csv",
@@ -30,19 +32,16 @@ planeur <- read_delim(
   trim_ws = TRUE
 ) %>% clean_names()
 
-# on renome les colonnes des 3 bases 
+
 kart    <- kart    %>% rename(nom_kart = nom_du_kart)
 roue    <- roue    %>% rename(nom_roue = roue)
 planeur <- planeur %>% rename(nom_planeur = planeur)
 
 
-#min/max/moyenne pour numeric, effectifs pour factors/character.
 summary(kart)
 summary(roue)
 summary(planeur)
 
-#On s'occuppe maintenant des personnages qui ont déjà chacun des points de base.
-#j'ai enlevé les lignes de calculs de la moyenne pour vitesse et maniabilité car elles sont déjà dans la base 
 personnages <- read_delim(
   "base personnages mario - Feuille 1.csv",
   delim = ",",
@@ -82,8 +81,10 @@ personnages <- read_delim(
 
 summary(personnages)
 
+# ===========================
+# MISE EN FORME DES CIRCUITS
+# ===========================
 
-#création des groupes de ciruit par catégorie 
 # 1) Circuits à EAU
 circuits_eau <- c(
   "Water Park",
@@ -142,7 +143,10 @@ circuits_tbl <- bind_rows(
   summarise(categories = paste(sort(unique(categorie)), collapse = " + "), .groups = "drop")
 
 
-# liste des stats à additionner
+# ============================================================
+# PARAMETRAGE DES VARIABLES DE PERFORMANCE ET DES PONDERATIONS 
+# ============================================================
+
 stats_cols <- c(
   "vitesse","vitesse_sol","vitesse_eau","vitesse_air","vitesse_antigravite",
   "acceleration","poids","maniabilite",
@@ -150,7 +154,7 @@ stats_cols <- c(
   "mini_turbo"
 )
 
-# Fonction qui met une catégorie en poids d'environnement
+
 poids_categorie <- function(categorie) {
   categorie <- toupper(categorie)
   
@@ -163,9 +167,10 @@ poids_categorie <- function(categorie) {
   c(sol=0.50, eau=0.10, air=0.10, anti=0.30)
 }
 
-# ==========================
+# ==================
 # QUESTIONNAIRE
-# ==========================
+# ==================
+
 questionnaire <- function(top_n = 10) {
   
   cat("\n=== QUESTIONNAIRE MK8D ===\n")
@@ -179,7 +184,7 @@ questionnaire <- function(top_n = 10) {
     mutate(circuit_clean = trimws(tolower(circuit)))
   
   # ==========================
-  # CHOIX PERSONNAGE (boucle jusqu'à validation)
+  # CHOIX PERSONNAGE 
   # ==========================
   cat("Voici tous les personnages du jeu, choisi en un :\n")
   print(head(sort(unique(personnages$personnage)), 53))
@@ -205,8 +210,9 @@ questionnaire <- function(top_n = 10) {
   }
   
   # ==========================
-  # CHOIX CIRCUIT (boucle jusqu'à validation)
+  # CHOIX CIRCUIT 
   # ==========================
+  
   cat("Voici tous les circuits possibles du jeu, choisis en un :\n")
   print(head(sort(unique(circuits_tbl$circuit)), 30))
   cat("\n")
@@ -272,7 +278,7 @@ questionnaire <- function(top_n = 10) {
   prefs <- prefs / sum(prefs)
   
   # ==========================
-  # COMBOS + SCORE (identique à ton code)
+  # COMBOS ET SCORE 
   # ==========================
   combos <- crossing(
     kart %>%
