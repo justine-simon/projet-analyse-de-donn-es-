@@ -228,19 +228,6 @@ questionnaire <- function(top_n = 10) {
     
     if (length(tmp) > 0) {
       categorie <- tmp[1]
-      # si jamais ton circuit a plusieurs catégories ("EAU + TECHNIQUE"), on fait la moyenne :
-      cats <- strsplit(categorie, " \\+ ")[[1]]   
-      ws <- lapply(cats, poids_categorie)
-      w <- Reduce("+", ws) / length(ws)
-      break
-    } else {
-      cat("\n circuit introuvable.\n")
-      cat(" copie-colle le nom EXACT depuis la liste.\n\n")
-      print(head(sort(unique(circuits_tbl$circuit)), 30))
-      cat("\n")
-    }
-  }
-  
   # ==========================
   # PRÉFÉRENCES 
   # ==========================
