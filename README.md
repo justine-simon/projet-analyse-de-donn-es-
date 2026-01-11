@@ -54,6 +54,7 @@ Le joueur attribue une note (de 0 à 10) à plusieurs critères de performance :
 - maniabilité 
 - accélération 
 - poids.
+
 Ces préférences sont normalisées afin de construire un profil de jeu cohérent, utilisé ensuite pour le calcul du score final. En effet, cette étape est essentielle car elle permet d’interpréter les réponses non pas comme des valeurs absolues, mais comme des poids relatifs. En effet, deux joueurs peuvent avoir exactement les mêmes préférences tout en utilisant des échelles différentes (par exemple 10–10–10–10–10 ou 5–5–5–5–5). Sans normalisation, ces deux profils produiraient des scores différents alors qu’ils traduisent le même style de jeu. La normalisation consiste à diviser chaque préférence par la somme totale afin d’obtenir un vecteur dont la somme vaut 1. Ainsi, chaque valeur représente la part d’importance accordée à un critère (vitesse, maniabilité, etc.), ce qui rend les scores comparables et cohérents entre utilisateurs.
 
 ## Principe de fonctionnement de l’algorithme
