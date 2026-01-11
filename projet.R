@@ -58,8 +58,8 @@ personnages <- read_delim(
     vitesse_antigravite = vitesse_anti_gravite,
     acceleration = acceleration,
     poids = poids,
-    # tes colonnes s'appellent "maniabilite_(sol/eau/air/anti_gravite)" dans cette base,
-    # mais dans tes autres bases tu utilises "manutention_(...)"
+    
+    # Nous avons renommé nos colonnes
     manutention_sol = maniabilite_sol,
     manutention_eau = maniabilite_eau,
     manutention_air = maniabilite_air,
@@ -146,7 +146,7 @@ circuits_tbl <- bind_rows(
 # ============================================================
 # PARAMETRAGE DES VARIABLES DE PERFORMANCE ET DES PONDERATIONS 
 # ============================================================
-
+#Nos statistiques à additionner
 stats_cols <- c(
   "vitesse","vitesse_sol","vitesse_eau","vitesse_air","vitesse_antigravite",
   "acceleration","poids","maniabilite",
@@ -154,7 +154,7 @@ stats_cols <- c(
   "mini_turbo"
 )
 
-
+#On pondère nos circuits par rapport à leur catégorie.
 poids_categorie <- function(categorie) {
   categorie <- toupper(categorie)
   
@@ -163,7 +163,7 @@ poids_categorie <- function(categorie) {
   if (categorie == "VITESSE")   return(c(sol=0.45, eau=0.05, air=0.10, anti=0.40))
   if (categorie == "TECHNIQUE") return(c(sol=0.45, eau=0.05, air=0.10, anti=0.40))
   
-  # si la catégorie n'est pas reconnue : profil moyen
+  # Si la catégorie n'est pas reconnue : profil moyen
   c(sol=0.50, eau=0.10, air=0.10, anti=0.30)
 }
 
@@ -262,7 +262,8 @@ questionnaire <- function(top_n = 10) {
   p_mania   <- ask_pref("Maniabilité")
   p_accel   <- ask_pref("Accélération")
   p_poids   <- ask_pref("Poids")
-  
+
+  #On normalise le vecteur   
   prefs <- c(
     vitesse = p_vitesse,
     mini_turbo = p_drift,
