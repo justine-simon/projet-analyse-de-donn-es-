@@ -264,13 +264,11 @@ questionnaire <- function(top_n = 10) {
   p_poids   <- ask_pref("Poids")
 
   #On normalise le vecteur   
-  prefs <- c(
-    vitesse = p_vitesse,
+  prefs <- c(vitesse = p_vitesse,
     mini_turbo = p_drift,
     maniabilite = p_mania,
     acceleration = p_accel,
-    poids = p_poids
-  )
+    poids = p_poids)
   
   if (sum(prefs) == 0) prefs <- prefs + 1
   prefs <- prefs / sum(prefs)
