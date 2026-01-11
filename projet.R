@@ -227,7 +227,15 @@ questionnaire <- function(top_n = 10) {
       pull(categories)
     
     if (length(tmp) > 0) {
-      categorie <- tmp[1]
+  categorie <- tmp[1]          # on prend la première catégorie
+  w <- poids_categorie(categorie)
+  break
+} else {
+  cat("\n circuit introuvable.\n")
+  cat(" copie-colle le nom EXACT depuis la liste.\n\n")
+  print(head(sort(unique(circuits_tbl$circuit)), 30))
+  cat("\n")
+}
   # ==========================
   # PRÉFÉRENCES 
   # ==========================
