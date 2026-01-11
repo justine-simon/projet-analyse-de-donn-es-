@@ -236,6 +236,8 @@ questionnaire <- function(top_n = 10) {
   print(head(sort(unique(circuits_tbl$circuit)), 30))
   cat("\n")
 }
+  }
+  
   # ==========================
   # PRÉFÉRENCES 
   # ==========================
@@ -327,8 +329,7 @@ questionnaire <- function(top_n = 10) {
   
   invisible(resultats)
     }
-  }
-}
+
 # ==========================
 # LANCER LE QUESTIONNAIRE
 # ==========================
