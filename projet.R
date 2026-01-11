@@ -313,7 +313,7 @@ questionnaire <- function(top_n = 10) {
   print(resultats %>% slice_head(n = top_n) %>% select(nom_kart, nom_roue, nom_planeur, score))
   
   invisible(resultats)
-}
+    }
   }
 }
 # ==========================
