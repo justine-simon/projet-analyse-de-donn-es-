@@ -28,7 +28,7 @@ Les données ont ensuite été importées depuis des fichiers CSV, puis nettoyé
 
 ## Classification des circuits et pondérations
 
-Nous avons classé les 48 circuits de Mario Kart 8 Deluxe en quatre grandes catégories selon leurs caractéristiques dominantes :
+Nous avons classé les 30 circuits de Mario Kart 8 Deluxe en quatre grandes catégories selon leurs caractéristiques dominantes :
 
 - Circuits aquatiques (EAU)
 - Circuits aériens (VOL)
