@@ -15,7 +15,7 @@
 \usepackage{amsmath}
 
 % ----------------------------
-% Informations du diaporama
+% slide 1
 % ----------------------------
 \title{analyse de données}
 \subtitle{Optimisation des karts sur MarioKart 8 Deluxe}
@@ -23,9 +23,7 @@
 \institute{Université de Strasbourg}
 \date{\today}
 
-% ----------------------------
-% Début du document
-% ----------------------------
+
 \begin{document}
 
 % Page de titre
@@ -34,15 +32,130 @@
 \end{frame}
 
 % ----------------------------
-% Première slide
+% slide 2
 % ----------------------------
-\begin{frame}{Introduction}
-  \begin{itemize}
-    \item Point 1
-    \item Point 2
-    \item Point 3
-  \end{itemize}
+\begin{frame}{Contexte du projet }
+Sur Mario Kart 8 Deluxe, le joueur peur choisir entre plusieurs composants pour son kart : 
+\begin{itemize}
+    \item le personnage
+    \item le kart
+    \item les roues, 
+    \item le planeur, 
+\end{itemize}
+
+\vspace{0.3cm}
+Chaque composant a des statistiques spécifiques :
+\begin{itemize}
+    \item la vitesse, 
+    \item l’accélération, 
+    \item la maniabilité, 
+    \item le poids...  
+\end{itemize}
+\vspace{0.3cm}
+
+Le choix d’un véhicule repose sur des arbitrages entre ces statistiques, qui dépendent du style de jeu du joueur et du type de circuit sélectionné.
+
 \end{frame}
 
-\end{document}
+% ----------------------------
+% slide 3
+% ----------------------------
 
+\begin{frame}{Objectifs du projet}
+\textbf {\underline{L’objectif global} : automatiser le choix de la meilleure combinaison possible en fonction de ces éléments, afin de proposer une aide à la décision personnalisée.}
+
+\vspace{0.6cm}
+\underline{Sous objectifs} :
+\begin{itemize}
+    \item intégrer des préférences utilisateur via un questionnaire interactif
+    \item mettre en place un système de pondération contextuelle
+    \item  automatiser le classement et la sélection de solutions optimales
+    \item  proposer une aide à la décision personnalisée pour le joueur
+
+\end{itemize}
+\end{frame}
+
+
+% ----------------------------
+% slide 4
+% ----------------------------
+
+\begin{frame}{Explication des scores}
+Création de bases de données à partir des statistiques du site Mario Wiki
+
+\vspace{0.3cm}
+Attribution de points à chaque composant du kart et à chaque personnage pour chaque statistiques prises en compte :
+\begin{itemize}
+    \item vitesse (sol, eau, air, antigravité)
+    \item maniabilité / manutention (sol, eau, air, antigravité)
+    \item poids
+    \item accélération
+    \item mini-turbo
+\end{itemize}
+
+\vspace{0.3cm}
+\underline{Principe des points} :
+
+Le score total est exprimé en point et correspond à la somme des points du personnage, du kart, des roues et du planeur, qui est compris entre 0 et 20
+
+L’objectif étant d’obtenir la valeur la plus élevée possible afin d’être le plus performant.
+\end{frame}
+
+% ----------------------------
+% slide 5
+% ----------------------------
+\begin{frame}{Construction et préparation des bases de données}
+Construction de quatre bases de données : personnages, karts, roues, planeurs
+
+\vspace{0.3cm}
+
+\begin{center}
+\includegraphics[width=0.9\textwidth]{image/tableau.png}
+\end{center}
+
+
+\begin{itemize}
+  \item nettoyage automatique des noms de colonnes
+  \item Gestion du séparateur décimal
+  \item correction des valeurs manquantes (variable taille des personnages)
+  \item calcul de statistiques moyennes de vitesse et de maniabilité selon l’environnement
+ \end{itemize} 
+
+\end{frame}
+
+
+% ----------------------------
+% slide 6
+% ----------------------------
+
+\begin{frame}{Classification des circuits}
+
+Regroupement des circuits en 4 catégories :
+  \begin{itemize}
+    \item \texttt{EAU}
+    \item \texttt{VOL}
+    \item \texttt{VITESSE}
+    \item \texttt{TECHNIQUE}
+  \end{itemize}
+
+Chaque circuit appartient à une seule catégorie basée sur l'environnement dominant
+
+ \vspace{0.3cm}
+Pondérations spécifiques selon le type de circuit
+
+  \underline{Exemple} : circuit aquatique :
+  
+\begin{center}
+
+\texttt{sol} : 40 \%\\
+\texttt{eau} : 45 \%\\
+\texttt{air} : 5 \%\\
+\texttt{antigravité} : 10 \%
+\end{center}
+
+
+\end{frame}
+
+
+
+\end{document}
