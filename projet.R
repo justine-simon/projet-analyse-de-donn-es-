@@ -48,8 +48,8 @@ personnages <- read_delim(
   locale = locale(decimal_mark = ","),
   show_col_types = FALSE
 ) %>%
-  clean_names() %>%                         # -> "taille", "personnage", "vitesse_sol", etc.
-  mutate(taille = na_if(taille, "")) %>%    # "" -> NA
+  clean_names() %>%                         # "taille", "personnage", "vitesse_sol", etc.
+  mutate(taille = na_if(taille, "")) %>%   
   fill(taille, .direction = "down") %>%     # propage Petit/Moyen/Grand...
   rename(
     vitesse_sol = vitesse_sol,
@@ -176,7 +176,7 @@ questionnaire <- function(top_n = 10) {
   cat("\n=== QUESTIONNAIRE MK8D ===\n")
   cat("Réponds dans la CONSOLE puis appuie sur Entrée.\n\n")
   
-  # --- Préparation (listes propres) ---
+  # Préparation (listes propres)
   personnages2 <- personnages %>%
     mutate(personnage_clean = trimws(tolower(personnage)))
   
@@ -267,6 +267,7 @@ questionnaire <- function(top_n = 10) {
   # ==========================
   # COMBOS ET SCORE 
   # ==========================
+  # On génère toutes les combinaisons possibles kart × roue × planeur et on renomme les colonnes de stats pour éviter les doublons.
   combos <- crossing(
     kart %>%
       select(nom_kart, all_of(stats_cols)) %>%
@@ -281,8 +282,8 @@ questionnaire <- function(top_n = 10) {
       rename_with(~ paste0(.x, "_planeur"), all_of(stats_cols))
   )
   
-  full <- combos
-  
+  full <- combos     # On crée un tableau qui contiendra les stats finales.
+  #Pour chaque statistique (vitesse, poids, maniabilité, etc.), on additionne : kart + roue + planeur + personnage.
   for (col in stats_cols) {
     full[[col]] <-
       full[[paste0(col, "_kart")]] +
@@ -292,18 +293,22 @@ questionnaire <- function(top_n = 10) {
   }
   
   full <- full %>%
-    select(nom_kart, nom_roue, nom_planeur, all_of(stats_cols))
-  
+    select(nom_kart, nom_roue, nom_planeur, all_of(stats_cols))    #On garde uniquement les colonnes utiles pour la suite.
+  # On calcule la vitesse contextuelle (pondérée selon sol, eau, air, antigravité).
   v_ctx <- full$vitesse_sol*w["sol"] + full$vitesse_eau*w["eau"] + full$vitesse_air*w["air"] + full$vitesse_antigravite*w["anti"]
+  #On calcule la maniabilité contextuelle.
   m_ctx <- full$manutention_sol*w["sol"] + full$manutention_eau*w["eau"] + full$manutention_air*w["air"] + full$manutention_antigravite*w["anti"]
-  
+
+  #Chaque critère est pondéré par la préférence normalisée du joueur.   
   score <- 0
   score <- score + prefs["vitesse"]      * v_ctx
   score <- score + prefs["mini_turbo"]   * full$mini_turbo
   score <- score + prefs["maniabilite"]  * m_ctx
   score <- score + prefs["acceleration"] * full$acceleration
   score <- score + prefs["poids"]        * full$poids
-  
+ 
+  # On ajoute le score au tableau et on classe par ordre décroissant
+
   resultats <- full %>% mutate(score = score) %>% arrange(desc(score))
   
   cat("\n=== MEILLEUR COMBO ===\n")
