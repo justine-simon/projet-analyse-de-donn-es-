@@ -9,7 +9,7 @@ library(tidyr)
 # ===================================
 
 kart <- read_delim(
-  "projet annalyse de données - kart.csv",
+  "projet analyse de données - kart.csv",
   delim = ",",
   locale = locale(decimal_mark = ","),   #indique que les décimales sont avec des virgules 
   show_col_types = FALSE,
@@ -17,7 +17,7 @@ kart <- read_delim(
 ) %>% clean_names()
 
 roue <- read_delim(
-  "projet annalyse de données - roue.csv",
+  "projet analyse de données - roue.csv",
   delim = ",",
   locale = locale(decimal_mark = ","),
   show_col_types = FALSE,
@@ -25,7 +25,7 @@ roue <- read_delim(
 ) %>% clean_names()
 
 planeur <- read_delim(
-  "projet annalyse de données - planeur.csv",
+  "projet analyse de données - planeur.csv",
   delim = ",",
   locale = locale(decimal_mark = ","),
   show_col_types = FALSE,
