@@ -314,7 +314,8 @@ questionnaire <- function(top_n = 10) {
   
   invisible(resultats)
 }
-
+  }
+}
 # ==========================
 # LANCER LE QUESTIONNAIRE
 # ==========================
