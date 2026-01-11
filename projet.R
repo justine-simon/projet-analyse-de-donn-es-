@@ -321,10 +321,12 @@ questionnaire <- function(top_n = 10) {
   resultats <- full %>% mutate(score = score) %>% arrange(desc(score))
   
   cat("\n=== MEILLEUR COMBO ===\n")
-  print(resultats %>% slice(1) %>% select(nom_kart, nom_roue, nom_planeur, score))
+  print(resultats %>% slice(1) 
+        %>% select(nom_kart, nom_roue, nom_planeur, score))
   
   cat("\n=== TOP ", top_n, " ===\n", sep="")
-  print(resultats %>% slice_head(n = top_n) %>% select(nom_kart, nom_roue, nom_planeur, score))
+  print(resultats %>% slice_head(n = top_n) 
+        %>% select(nom_kart, nom_roue, nom_planeur, score))
   
   invisible(resultats)
     }
