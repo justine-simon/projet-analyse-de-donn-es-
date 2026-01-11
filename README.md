@@ -68,7 +68,7 @@ Le code fonctionne selon les étapes suivantes :
 5. Construction d’un score global pour chaque combinaison, basé sur les préférences du joueur ; les statistiques du véhicule et les pondérations liées au circuit.
 6. Classement des configurations par ordre décroissant de performance.
 
-Le programme retourne alors la meilleure combinaison recommandée ainsi qu’un classement des meilleures configurations selon le score obtenu.
+En effet, nous avons généré l’ensemble des combinaisons possibles entre les karts, les roues et les planeurs à l’aide d’un produit cartésien. Afin d’éviter les conflits de noms de variables, nous avons renommé les colonnes de statistiques de chaque composant en leur ajoutant un suffixe indiquant leur origine (kart, roue ou planeur). Pour chaque combinaison, nous avons ensuite calculé les statistiques finales du véhicule en additionnant les valeurs du kart, des roues, du planeur et du personnage choisi par l’utilisateur. Ces statistiques sont ensuite ajustées au contexte du circuit grâce à des pondérations spécifiques aux environnements (sol, eau, air et antigravité), permettant de calculer une vitesse et une maniabilité contextuelles. À partir de ces valeurs et du vecteur de préférences normalisé du joueur, nous construisons un score global pour chaque configuration. Enfin, toutes les combinaisons sont classées par ordre décroissant de score, ce qui permet d’identifier automatiquement la meilleure configuration ainsi que les meilleures alternatives.
 
 ## Données utilisées
 
