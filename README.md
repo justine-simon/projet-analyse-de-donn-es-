@@ -4,25 +4,31 @@
 
 Ce projet vise à analyser et exploiter les statistiques des différents composants de Mario Kart 8 Deluxe (personnages, karts, roues et planeurs) afin de déterminer automatiquement la combinaison optimale en fonction des préférences du joueur.
 
-Dans Mario Kart 8 Deluxe, chaque composant possède des caractéristiques spécifiques (vitesse, accélération, maniabilité, poids, mini-turbo, etc.). Le choix d’un véhicule repose donc sur des arbitrages entre ces statistiques, qui dépendent à la fois du style de jeu du joueur et du type de circuit sélectionné.
-L’objectif de ce projet est d’automatiser cette prise de décision en proposant, à partir de critères personnalisés, les configurations offrant les meilleures performances possibles.
+Dans Mario Kart 8 Deluxe, chaque composant possède des caractéristiques spécifiques (vitesse, accélération, maniabilité, poids, mini-turbo, etc.). Le choix d’un véhicule repose donc sur des arbitrages entre ces statistiques, qui dépendent à la fois du style de jeu du joueur et du type de circuit et de personnage sélectionné.
+
+## Objectifs du projet
+
+Les objectifs principaux de ce projet sont :
+
+- intégrer des préférences utilisateur via un questionnaire interactif 
+- mettre en place un système de pondération contextuelle 
+- automatiser le classement et la sélection de solutions optimales 
+- proposer une aide à la décision personnalisée pour le joueur.
 
 ## Construction des bases de données
 
-Dans un premier temps, plusieurs bases de données ont été constituées à partir des statistiques du jeu. Elles regroupent :
+Dans un premier temps, nous avons construit nos propres bases de données à partir des statistiques du site Mario Wiki. Des points sont ainsi attribués à chaque élément constituant le kart, ainsi qu’à chaque personnage, et ce pour la vitesse sur le sol, dans l’eau, dans l’air et en antigravité, ainsi que pour la maniabilité (ou manutention) dans ces mêmes environnements, le poids, l’accélération et le mini-turbo. Il est important de préciser que le jeu stocke les statistiques des pilotes et des pièces sous forme de points : pour chaque caractéristique, la somme des points du pilote, de la carrosserie, des pneus et du planeur donne un score compris entre 0 et 20, l’objectif étant d’obtenir la valeur la plus élevée possible afin d’être le plus performant. De ce fait, nous avons constitué quatre bases distinctes regroupant respectivement :
 
-- les caractéristiques des personnages ;
-- les statistiques des karts ;
-- les statistiques des roues ;
+- les caractéristiques des personnages
+- les statistiques des karts
+- les statistiques des roues
 - les statistiques des planeurs.
 
-Les données ont été importées depuis des fichiers CSV, nettoyées et harmonisées (noms de variables, formats numériques, cohérence des catégories) afin de permettre leur combinaison ultérieure.
-Pour les personnages, des statistiques moyennes de vitesse et de maniabilité ont également été calculées à partir des performances selon l’environnement (sol, eau, air et antigravité).
-
+Les données ont ensuite été importées depuis des fichiers CSV, puis nettoyées et harmonisées. Un nettoyage automatique des noms de colonnes a notamment été effectué (standardisation en minuscules et en underscores) afin d’éviter les erreurs de saisie et de faciliter la fusion des bases. De plus, dans la base des personnages, certaines valeurs de la variable taille étaient indiquées par blocs ; nous avons donc propagé la catégorie correspondante à l’ensemble des personnages concernés. Enfin, pour chacune des bases, nous avons calculé des statistiques moyennes de vitesse et de maniabilité à partir des performances selon les différents environnements (sol, eau, air et antigravité).
 
 ## Classification des circuits et pondérations
 
-Les 30 circuits de Mario Kart 8 Deluxe ont ensuite été classés en quatre grandes catégories selon leurs caractéristiques dominantes :
+Nous avons classé les 48 circuits de Mario Kart 8 Deluxe en quatre grandes catégories selon leurs caractéristiques dominantes :
 
 - Circuits aquatiques (EAU)
 - Circuits aériens (VOL)
@@ -31,7 +37,7 @@ Les 30 circuits de Mario Kart 8 Deluxe ont ensuite été classés en quatre gran
 
 À chaque catégorie de circuit est associée une pondération spécifique des environnements (sol, eau, air, antigravité).
 Par exemple, pour un circuit aquatique, les statistiques de vitesse et de maniabilité en eau sont davantage valorisées que celles liées aux autres environnements.
-Ces pondérations permettent d’adapter l’évaluation des performances au contexte réel de course.
+Ces pondérations permettent d’adapter l’évaluation des performances au contexte réel de course. De plus, pour simplifier l’analyse, nous avons affecté chaque circuit à une seule catégorie , ce qui rend le système plus lisible et plus facile à interpréter.
 
 
 ## Conception du questionnaire utilisateur
@@ -39,17 +45,16 @@ Ces pondérations permettent d’adapter l’évaluation des performances au con
 Le projet repose sur un questionnaire interactif en deux étapes :
 
 ### 1. Choix du contexte de jeu
-Le joueur sélectionne son personnage préféré. Il choisit ensuite un circuit parmi la liste proposée, ce qui détermine automatiquement la catégorie du circuit et les pondérations associées.
+Le joueur sélectionne son personnage préféré. Il choisit ensuite un circuit parmi la liste proposée, ce qui détermine automatiquement la catégorie du circuit et les pondérations associées. Nous avons aussi ajouté des contrôles de saisie : si le nom du personnage ou du circuit est mal écrit, le programme redemande une saisie correcte en affichant à nouveau la liste.
 
 ### 2. Définition des préférences de jeu
 Le joueur attribue une note (de 0 à 10) à plusieurs critères de performance :
-- vitesse ;
-- mini-turbo (drift) ;
-- maniabilité ;
-- accélération ;
+- vitesse 
+- mini-turbo (drift) 
+- maniabilité 
+- accélération 
 - poids.
-Ces préférences sont normalisées afin de construire un profil de jeu cohérent, utilisé ensuite pour le calcul du score final.
-
+Ces préférences sont normalisées afin de construire un profil de jeu cohérent, utilisé ensuite pour le calcul du score final. En effet, cette étape est essentielle car elle permet d’interpréter les réponses non pas comme des valeurs absolues, mais comme des poids relatifs. En effet, deux joueurs peuvent avoir exactement les mêmes préférences tout en utilisant des échelles différentes (par exemple 10–10–10–10–10 ou 5–5–5–5–5). Sans normalisation, ces deux profils produiraient des scores différents alors qu’ils traduisent le même style de jeu. La normalisation consiste à diviser chaque préférence par la somme totale afin d’obtenir un vecteur dont la somme vaut 1. Ainsi, chaque valeur représente la part d’importance accordée à un critère (vitesse, maniabilité, etc.), ce qui rend les scores comparables et cohérents entre utilisateurs.
 
 ## Principe de fonctionnement de l’algorithme
 
@@ -63,17 +68,6 @@ Le code fonctionne selon les étapes suivantes :
 6. Classement des configurations par ordre décroissant de performance.
 
 Le programme retourne alors la meilleure combinaison recommandée ainsi qu’un classement des meilleures configurations selon le score obtenu.
-
-
-## Objectifs du projet
-
-Les objectifs principaux de ce projet sont :
-
-- intégrer des préférences utilisateur via un questionnaire interactif ;
-- mettre en place un système de pondération contextuelle ;
-- automatiser le classement et la sélection de solutions optimales ;
-- proposer une aide à la décision personnalisée pour le joueur.
-
 
 ## Données utilisées
 
