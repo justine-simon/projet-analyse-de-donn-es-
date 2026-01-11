@@ -28,7 +28,7 @@ Les données ont ensuite été importées depuis des fichiers CSV, puis nettoyé
 
 ## Classification des circuits et pondérations
 
-Nous avons classé les 30 circuits de Mario Kart 8 Deluxe en quatre grandes catégories selon leurs caractéristiques dominantes :
+Nous avons classé 30 circuits de Mario Kart 8 Deluxe en quatre grandes catégories selon leurs caractéristiques dominantes :
 
 - Circuits aquatiques (EAU)
 - Circuits aériens (VOL)
@@ -42,7 +42,7 @@ Ces pondérations permettent d’adapter l’évaluation des performances au con
 
 ## Conception du questionnaire utilisateur
 
-Le projet repose sur un questionnaire interactif en deux étapes :
+Le projet repose sur un questionnaire intéractif en deux étapes :
 
 ### 1. Choix du contexte de jeu
 Le joueur sélectionne son personnage préféré. Il choisit ensuite un circuit parmi la liste proposée, ce qui détermine automatiquement la catégorie du circuit et les pondérations associées. Nous avons aussi ajouté des contrôles de saisie : si le nom du personnage ou du circuit est mal écrit, le programme redemande une saisie correcte en affichant à nouveau la liste.
