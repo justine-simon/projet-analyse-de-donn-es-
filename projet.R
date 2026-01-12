@@ -51,6 +51,7 @@ personnages <- read_delim(
   clean_names() %>%                         # "taille", "personnage", "vitesse_sol", etc.
   mutate(taille = na_if(taille, "")) %>%   
   fill(taille, .direction = "down") %>%     # propage Petit/Moyen/Grand...
+ # Nous avons renommé nos colonnes
   rename(
     vitesse_sol = vitesse_sol,
     vitesse_eau = vitesse_eau,
@@ -59,7 +60,6 @@ personnages <- read_delim(
     acceleration = acceleration,
     poids = poids,
     
-    # Nous avons renommé nos colonnes
     manutention_sol = maniabilite_sol,
     manutention_eau = maniabilite_eau,
     manutention_air = maniabilite_air,
@@ -67,6 +67,7 @@ personnages <- read_delim(
     mini_turbo = mini_turbo,
     traction = traction
   ) %>%
+#Nous calculons la vitesse moyenne et maniabilité moyenne
   mutate(
     vitesse = rowMeans(across(c(vitesse_sol, vitesse_eau, vitesse_air, vitesse_antigravite)), na.rm = TRUE),
     maniabilite = rowMeans(across(c(manutention_sol, manutention_eau, manutention_air, manutention_antigravite)), na.rm = TRUE)
@@ -132,7 +133,7 @@ circuits_tech <- c(
   "Super Bell Subway"
 )
 
-
+#Nous créons une nouvelle base pour les circuits
 circuits_tbl <- bind_rows(
   tibble(circuit = circuits_eau, categorie = "EAU"),
   tibble(circuit = circuits_vol, categorie = "VOL"),
@@ -154,7 +155,7 @@ stats_cols <- c(
   "mini_turbo"
 )
 
-#On pondère nos circuits par rapport à leur catégorie.
+#Nous pondérons nos circuits par rapport à leur catégorie.
 poids_categorie <- function(categorie) {
   categorie <- toupper(categorie)
   
@@ -176,7 +177,7 @@ questionnaire <- function(top_n = 10) {
   cat("\n=== QUESTIONNAIRE MK8D ===\n")
   cat("Réponds dans la CONSOLE puis appuie sur Entrée.\n\n")
   
-  # Préparation (listes propres)
+  # Nous nettoyons les noms dans les listes de personnages et de circuits
   personnages2 <- personnages %>%
     mutate(personnage_clean = trimws(tolower(personnage)))
   
@@ -263,7 +264,7 @@ questionnaire <- function(top_n = 10) {
   p_accel   <- ask_pref("Accélération")
   p_poids   <- ask_pref("Poids")
 
-  #On normalise le vecteur   
+  #Nous normalisons le vecteur de préférences   
   prefs <- c(vitesse = p_vitesse,
     mini_turbo = p_drift,
     maniabilite = p_mania,
@@ -276,7 +277,7 @@ questionnaire <- function(top_n = 10) {
   # ==========================
   # COMBOS ET SCORE 
   # ==========================
-  # On génère toutes les combinaisons possibles kart × roue × planeur et on renomme les colonnes de stats pour éviter les doublons.
+  # Nous génèrons toutes les combinaisons possibles kart × roue × planeur et nous renommons les colonnes de stats pour éviter les doublons.
   combos <- crossing(
     kart %>%
       select(nom_kart, all_of(stats_cols)) %>%
@@ -291,7 +292,7 @@ questionnaire <- function(top_n = 10) {
       rename_with(~ paste0(.x, "_planeur"), all_of(stats_cols))
   )
   
-  full <- combos     # On crée un tableau qui contiendra les stats finales.
+  full <- combos     # Nous créons un tableau qui contiendra les stats finales.
   #Pour chaque statistique (vitesse, poids, maniabilité, etc.), on additionne : kart + roue + planeur + personnage.
   for (col in stats_cols) {
     full[[col]] <-
@@ -302,10 +303,10 @@ questionnaire <- function(top_n = 10) {
   }
   
   full <- full %>%
-    select(nom_kart, nom_roue, nom_planeur, all_of(stats_cols))    #On garde uniquement les colonnes utiles pour la suite.
-  # On calcule la vitesse contextuelle (pondérée selon sol, eau, air, antigravité).
+    select(nom_kart, nom_roue, nom_planeur, all_of(stats_cols))    #Nous gardons uniquement les colonnes utiles pour la suite.
+  # Nous calculons la vitesse contextuelle (pondérée selon sol, eau, air, antigravité).
   v_ctx <- full$vitesse_sol*w["sol"] + full$vitesse_eau*w["eau"] + full$vitesse_air*w["air"] + full$vitesse_antigravite*w["anti"]
-  #On calcule la maniabilité contextuelle.
+  #Nous calculons la maniabilité contextuelle.
   m_ctx <- full$manutention_sol*w["sol"] + full$manutention_eau*w["eau"] + full$manutention_air*w["air"] + full$manutention_antigravite*w["anti"]
 
   #Chaque critère est pondéré par la préférence normalisée du joueur.   
@@ -316,7 +317,7 @@ questionnaire <- function(top_n = 10) {
   score <- score + prefs["acceleration"] * full$acceleration
   score <- score + prefs["poids"]        * full$poids
  
-  # On ajoute le score au tableau et on classe par ordre décroissant
+  # Nous ajoutons le score au tableau et nous classons par ordre décroissant
 
   resultats <- full %>% mutate(score = score) %>% arrange(desc(score))
   
