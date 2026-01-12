@@ -1,5 +1,3 @@
--> appuyer les difficulté sur les virgules dans l'importations des bases 
-
 # Projet-analyse-de-données 
 
 ## Présentation du projet
@@ -20,14 +18,15 @@ Les objectifs principaux de ce projet sont :
 ## Construction des bases de données
 
 Dans un premier temps, nous avons construit nos propres bases de données à partir des statistiques du site Mario Wiki. 
-Des points sont ainsi attribués à chaque élément constituant le kart, ainsi qu’à chaque personnage, et ce pour la vitesse sur le sol, dans l’eau, dans l’air et en antigravité, ainsi que pour la maniabilité (ou manutention) dans ces mêmes environnements, le poids, l’accélération et le mini-turbo. Il est important de préciser que le jeu stocke les statistiques des pilotes et des pièces sous forme de points : pour chaque caractéristique, la somme des points du pilote, de la carrosserie, des pneus et du planeur donne un score compris entre 0 et 20, l’objectif étant d’obtenir la valeur la plus élevée possible afin d’être le plus performant. De ce fait, nous avons constitué quatre bases distinctes regroupant respectivement :
+Des points sont ainsi attribués à chaque élément constituant le kart, ainsi qu’à chaque personnage, et ce pour la vitesse sur le sol, dans l’eau, dans l’air et en antigravité, ainsi que pour la maniabilité (ou manutention) dans ces mêmes environnements, le poids, l’accélération et le mini-turbo. Il est important de préciser que le jeu stocke les statistiques des pilotes et des pièces sous forme de points : pour chaque caractéristique, la somme des points du pilote, de la carrosserie, des pneus et du planeur donne un score compris entre 0 et 20, l’objectif étant d’obtenir la valeur la plus élevée possible afin d’être le plus performant. 
+De ce fait, nous avons constitué quatre bases distinctes regroupant respectivement :
 
-- les caractéristiques des personnages
+- les statistiques des personnages
 - les statistiques des karts
 - les statistiques des roues
 - les statistiques des planeurs.
 
-Les données ont ensuite été importées depuis des fichiers CSV, puis nettoyées et harmonisées. Un nettoyage automatique des noms de colonnes a notamment été effectué (standardisation en minuscules et en underscores) afin d’éviter les erreurs de saisie et de faciliter la fusion des bases. De plus, dans la base des personnages, certaines valeurs de la variable taille étaient indiquées par blocs ; nous avons donc propagé la catégorie correspondante à l’ensemble des personnages concernés. Enfin, pour chacune des bases, nous avons calculé des statistiques moyennes de vitesse et de maniabilité à partir des performances selon les différents environnements (sol, eau, air et antigravité).
+Les données ont ensuite été importées depuis des fichiers CSV, via le package readr, qui nous a permis d'indiquer le séparateur de colonnes, gérer les virgules décimales et convertir les données en tableaux exploitables. Ensuite, nous avons nettoyé et harmonisé nos bases grâce aux packages dplyr et janitor, qui nous ont permis de filtrer des lignes, sélectionner des colonnes, renommer des variables, créer de nouvelles colonnes et simplifier leurs noms. En effet, un nettoyage automatique des noms de colonnes a notamment été effectué (standardisation en minuscules et en underscores) afin d’éviter les erreurs de saisie et de faciliter la fusion des bases. De plus, dans la base des personnages, certaines valeurs de la variable taille étaient indiquées par blocs, nous avons donc propagé la catégorie correspondante à l’ensemble des personnages concernés. Enfin, pour chacune des bases, nous avons calculé des statistiques moyennes de vitesse et de maniabilité à partir des performances selon les différents environnements (sol, eau, air et antigravité).
 
 ## Classification des circuits et pondérations
 
@@ -37,10 +36,15 @@ Nous avons classé 30 circuits de Mario Kart 8 Deluxe en quatre grandes catégor
 - Circuits aériens (VOL)
 - Circuits orientés vitesse (VITESSE)
 - Circuits techniques (TECHNIQUE)
+  
+Nous avons fait le choix de simplifier la classification en attribuant chaque circuit à une seule catégorie, même si, dans la réalité, un circuit peut comporter plusieurs types de zones, comme par exemple du sol et de l’eau. Le critère retenu a donc été l’environnement dominant sur l’ensemble du circuit.
+
 
 À chaque catégorie de circuit est associée une pondération spécifique des environnements (sol, eau, air, antigravité).
 Par exemple, pour un circuit aquatique, les statistiques de vitesse et de maniabilité en eau sont davantage valorisées que celles liées aux autres environnements.
-Ces pondérations permettent d’adapter l’évaluation des performances au contexte réel de course. De plus, pour simplifier l’analyse, nous avons affecté chaque circuit à une seule catégorie , ce qui rend le système plus lisible et plus facile à interpréter.
+Ainsi, nous avons formulé les hypothèses suivantes : 
+
+Ces pondérations permettent d’adapter l’évaluation des performances au contexte réel de course. 
 
 
 ## Conception du questionnaire utilisateur
