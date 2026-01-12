@@ -1,3 +1,6 @@
+-> indiqué les package utilisé 
+-> appuyer les difficulté sur les virgules dans l'importations des bases 
+
 # Projet-analyse-de-données 
 
 ## Présentation du projet
