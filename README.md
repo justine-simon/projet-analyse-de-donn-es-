@@ -19,7 +19,8 @@ Les objectifs principaux de ce projet sont :
 
 ## Construction des bases de données
 
-Dans un premier temps, nous avons construit nos propres bases de données à partir des statistiques du site Mario Wiki. Des points sont ainsi attribués à chaque élément constituant le kart, ainsi qu’à chaque personnage, et ce pour la vitesse sur le sol, dans l’eau, dans l’air et en antigravité, ainsi que pour la maniabilité (ou manutention) dans ces mêmes environnements, le poids, l’accélération et le mini-turbo. Il est important de préciser que le jeu stocke les statistiques des pilotes et des pièces sous forme de points : pour chaque caractéristique, la somme des points du pilote, de la carrosserie, des pneus et du planeur donne un score compris entre 0 et 20, l’objectif étant d’obtenir la valeur la plus élevée possible afin d’être le plus performant. De ce fait, nous avons constitué quatre bases distinctes regroupant respectivement :
+Dans un premier temps, nous avons construit nos propres bases de données à partir des statistiques du site Mario Wiki. 
+Des points sont ainsi attribués à chaque élément constituant le kart, ainsi qu’à chaque personnage, et ce pour la vitesse sur le sol, dans l’eau, dans l’air et en antigravité, ainsi que pour la maniabilité (ou manutention) dans ces mêmes environnements, le poids, l’accélération et le mini-turbo. Il est important de préciser que le jeu stocke les statistiques des pilotes et des pièces sous forme de points : pour chaque caractéristique, la somme des points du pilote, de la carrosserie, des pneus et du planeur donne un score compris entre 0 et 20, l’objectif étant d’obtenir la valeur la plus élevée possible afin d’être le plus performant. De ce fait, nous avons constitué quatre bases distinctes regroupant respectivement :
 
 - les caractéristiques des personnages
 - les statistiques des karts
