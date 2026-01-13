@@ -1,4 +1,5 @@
 # Projet-analyse-de-données 
+Justine SIMON, Clarisse LE PHILIPPE
 
 ## Présentation du projet
 
